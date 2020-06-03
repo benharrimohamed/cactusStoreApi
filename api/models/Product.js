@@ -8,7 +8,8 @@ const ProductSchema = new Schema ({
     label : {type : String , require : true},
     description : {type : String  , require : true},
     price : {type : Number  , require : true},
-    date : {type : Date  , require : true},
+    created_at : {type : Date  , require : true},
+    updated_at : {type : Date  , require : true},
 
 });
 
