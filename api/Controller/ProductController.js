@@ -16,7 +16,7 @@ exports.createProduct = (req, res, next) => {
 
 exports.getProducts = (req,res,next) => {
     
-    Product.find()
+    Product.find().exec()
     .then(result => {
         res.json(result);
     })
@@ -26,7 +26,8 @@ exports.getProducts = (req,res,next) => {
 }
 
 exports.getProduct = (req, res, next) => {
-    Product.find(req.body.id)
+    
+    Product.findById(req.params.id).exec()
     .then(result => {
         res.json(result);
     })
@@ -35,8 +36,16 @@ exports.getProduct = (req, res, next) => {
     })
 }
 
-exports.deleteProduct =  (res, req, next) => {
-
+exports.deleteProduct =  (req, res, next) => {
+  console.log(req.params.id);
+  Product.deleteOne({_id : req.params.id}).exec()
+ .then(result => {
+     console.log(result);
+     res.json(result);
+ })
+ .catch(err => {
+     throw err;
+ })
 }
 
 exports.updateProduct = (res, req, next) => {
