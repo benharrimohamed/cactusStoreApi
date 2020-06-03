@@ -1,34 +1,38 @@
-const Product = require ('../DOA/Product');
+const Product = require ('../models/Product');
 
 exports.createProduct = (req, res, next) => {
 
-     const product = {
+     const product = new Product ({
          label : req.body.label,
          description : req.body.description,
          price : req.body.price,
          date : new Date(),
-     }
+     });
 
-     Product.create (product, (err, product) => {
-     err ? res.json({
-         success : false,
-         msg : "There is an error when addin this product !"
-     }) : res.json({
-        success : true,
-        product : product
-     })
+     product.save().then(() => {
+         res.json(product);
      });
 };
 
 exports.getProducts = (req,res,next) => {
-   Product.get({}, (err, products) => {
-       err ? res.json({ success : false , msg : "error when getting products !"}) : res.json ({success : true , products : products});
-   })
+    
+    Product.find()
+    .then(result => {
+        res.json(result);
+    })
+    .catch(err => {
+        throw err;
+    });
 }
 
 exports.getProduct = (req, res, next) => {
-
-
+    Product.find(req.body.id)
+    .then(result => {
+        res.json(result);
+    })
+    .catch(err => {
+        throw err;
+    })
 }
 
 exports.deleteProduct =  (res, req, next) => {
