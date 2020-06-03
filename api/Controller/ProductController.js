@@ -6,7 +6,8 @@ exports.createProduct = (req, res, next) => {
          label : req.body.label,
          description : req.body.description,
          price : req.body.price,
-         date : new Date(),
+         created_at : new Date(),
+         updated_at : new Date(),
      });
 
      product.save().then(() => {
@@ -37,8 +38,8 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.deleteProduct =  (req, res, next) => {
-  console.log(req.params.id);
-  Product.deleteOne({_id : req.params.id}).exec()
+  
+  Product.findByIdAndRemove({_id : req.params.id}).exec()
  .then(result => {
      console.log(result);
      res.json(result);
@@ -48,6 +49,16 @@ exports.deleteProduct =  (req, res, next) => {
  })
 }
 
-exports.updateProduct = (res, req, next) => {
-
+exports.updateProduct = (req, res, next) => {
+ const newProduct = {
+    label : req.body.label,
+    description : req.body.description,
+    price : req.body.price,
+    updated_at : new Date(),
+ }  
+ Product.findByIdAndUpdate({_id : req.params.id},newProduct).exec()
+ .then(result => {
+    res.json(result);
+ })
+ .catch(err => {throw err})
 }
